@@ -4,6 +4,7 @@
   "main": "dist/",
   "scripts": {
     "start": "node .",
+    "start:dev": "node --watch .",
     "build": "tsc",
     "build:dev": "tsc -w",
     "prepare": "husky",
