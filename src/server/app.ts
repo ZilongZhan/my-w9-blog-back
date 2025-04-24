@@ -10,6 +10,8 @@ app.use(morgan("dev"));
 
 app.get("/", handleHealthCheck);
 
+app.use("/posts");
+
 app.use(handleEndpointNotFound);
 app.use(handleErrors);
 
