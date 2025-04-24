@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { Model, Query } from "mongoose";
 import { PostStructure } from "../../types.js";
 import PostController from "../PostController.js";
 import * as fixturePosts from "../../fixtures.js";
 import statusCodes from "../../../globals/statusCodes.js";
+import { PostsRequest } from "../types.js";
 
 describe("Given the getPosts method of PostController", () => {
   const res = {
@@ -47,24 +48,24 @@ describe("Given the getPosts method of PostController", () => {
 
     const req = {
       query: {},
-    } as Pick<Request, "query">;
+    } as Pick<PostsRequest, "query">;
 
     test("Then it should call the response's status method with status code 200", async () => {
       const expectedStatusCode = statusCodes.OK;
 
-      await postController.getPosts(req as Request, res as Response);
+      await postController.getPosts(req as PostsRequest, res as Response);
 
       expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
     });
 
     test("Then it should call the response's json method with recipes 1 to 5", async () => {
-      await postController.getPosts(req as Request, res as Response);
+      await postController.getPosts(req as PostsRequest, res as Response);
 
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ posts }));
     });
 
     test("Then it should call the response's json method with 10 total posts", async () => {
-      await postController.getPosts(req as Request, res as Response);
+      await postController.getPosts(req as PostsRequest, res as Response);
 
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({ postsTotal }),
@@ -105,9 +106,9 @@ describe("Given the getPosts method of PostController", () => {
         query: {
           pageNumber: "2",
         },
-      } as Pick<Request, "query">;
+      } as Pick<PostsRequest, "query">;
 
-      await postController.getPosts(req as Request, res as Response);
+      await postController.getPosts(req as PostsRequest, res as Response);
 
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ posts }));
     });
