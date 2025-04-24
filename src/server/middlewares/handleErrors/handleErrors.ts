@@ -14,6 +14,7 @@ const handleErrors = (
   _next: NextFunction,
 ): void => {
   debug(error.message);
+  debug(error.stack);
 
   res.status(error.statusCode ?? statusCodes.INTERNAL_SERVER_ERROR).json({
     error:
