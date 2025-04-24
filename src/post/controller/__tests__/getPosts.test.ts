@@ -1,15 +1,18 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { Model, Query } from "mongoose";
 import { PostStructure } from "../../types.js";
 import PostController from "../PostController.js";
 import * as fixturePosts from "../../fixtures.js";
 import statusCodes from "../../../globals/statusCodes.js";
+import { PostsRequest } from "../types.js";
 
-describe("Given the getPage method of PostController", () => {
+describe("Given the getPosts method of PostController", () => {
   const res = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn(),
   } as Pick<Response, "status" | "json">;
+
+  const postsTotal = 10;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -36,6 +39,7 @@ describe("Given the getPage method of PostController", () => {
 
     const postsModel = {
       find: jest.fn().mockReturnValue(query),
+      countDocuments: jest.fn().mockReturnValue(postsTotal),
     } as Pick<Model<PostStructure>, "find">;
 
     const postController = new PostController(
@@ -44,20 +48,28 @@ describe("Given the getPage method of PostController", () => {
 
     const req = {
       query: {},
-    } as Pick<Request, "query">;
+    } as Pick<PostsRequest, "query">;
 
     test("Then it should call the response's status method with status code 200", async () => {
       const expectedStatusCode = statusCodes.OK;
 
-      await postController.getPage(req as Request, res as Response);
+      await postController.getPosts(req as PostsRequest, res as Response);
 
       expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
     });
 
     test("Then it should call the response's json method with recipes 1 to 5", async () => {
-      await postController.getPage(req as Request, res as Response);
+      await postController.getPosts(req as PostsRequest, res as Response);
 
-      expect(res.json).toHaveBeenCalledWith({ posts });
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ posts }));
+    });
+
+    test("Then it should call the response's json method with 10 total posts", async () => {
+      await postController.getPosts(req as PostsRequest, res as Response);
+
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({ postsTotal }),
+      );
     });
   });
 
@@ -83,6 +95,7 @@ describe("Given the getPage method of PostController", () => {
 
       const postsModel = {
         find: jest.fn().mockReturnValue(query),
+        countDocuments: jest.fn().mockReturnValue(postsTotal),
       } as Pick<Model<PostStructure>, "find">;
 
       const postController = new PostController(
@@ -93,11 +106,11 @@ describe("Given the getPage method of PostController", () => {
         query: {
           pageNumber: "2",
         },
-      } as Pick<Request, "query">;
+      } as Pick<PostsRequest, "query">;
 
-      await postController.getPage(req as Request, res as Response);
+      await postController.getPosts(req as PostsRequest, res as Response);
 
-      expect(res.json).toHaveBeenCalledWith({ posts });
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ posts }));
     });
   });
 });
