@@ -7,7 +7,7 @@ import statusCodes from "../../globals/statusCodes.js";
 class PostController implements PostControllerStructure {
   constructor(private posts: Model<PostStructure>) {}
 
-  public getPage = async (req: Request, res: Response): Promise<void> => {
+  public getPosts = async (req: Request, res: Response): Promise<void> => {
     let { pageNumber } = req.query;
 
     if (!pageNumber) {
@@ -24,7 +24,9 @@ class PostController implements PostControllerStructure {
       .limit(postsLimit)
       .exec();
 
-    res.status(statusCodes.OK).json({ posts });
+    const postsTotal = await this.posts.countDocuments();
+
+    res.status(statusCodes.OK).json({ posts, postsTotal });
   };
 }
 
