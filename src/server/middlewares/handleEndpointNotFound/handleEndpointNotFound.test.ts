@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import handleEndpointNotFound from "./handleEndpointNotFound.js";
 import ServerError from "../../ServerError/ServerError.js";
+import statusCodes from "../../../globals/statusCodes.js";
 
 describe("Given the handleEndpointNotFound middleware", () => {
   describe("When it receives a next function", () => {
@@ -14,7 +15,7 @@ describe("Given the handleEndpointNotFound middleware", () => {
 
     test("Then it should call the next function with an error with status code 404", () => {
       const expectedError = {
-        statusCode: 404,
+        statusCode: statusCodes.NOT_FOUND,
       } as Pick<ServerError, "statusCode">;
 
       handleEndpointNotFound(

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import handleHealthCheck from "./handleHealthCheck.js";
+import statusCodes from "../../../globals/statusCodes.js";
 
 describe("Given the handleHealthCheck middleware", () => {
   describe("When it receives a response", () => {
@@ -14,7 +15,7 @@ describe("Given the handleHealthCheck middleware", () => {
     });
 
     test("Then it should call the response's status method with status code 200", () => {
-      const expectedStatusCode = 200;
+      const expectedStatusCode = statusCodes.OK;
 
       handleHealthCheck(req as Request, res as Response);
 
