@@ -2,18 +2,8 @@ import { Request, Response } from "express";
 import { Model, Query } from "mongoose";
 import { PostStructure } from "../../types.js";
 import PostController from "../PostController.js";
-import {
-  recipe1,
-  recipe10,
-  recipe2,
-  recipe3,
-  recipe4,
-  recipe5,
-  recipe6,
-  recipe7,
-  recipe8,
-  recipe9,
-} from "../../fixtures.js";
+import * as fixturePosts from "../../fixtures.js";
+import statusCodes from "../../../globals/statusCodes.js";
 
 describe("Given the getPage method of PostController", () => {
   const res = {
@@ -26,7 +16,13 @@ describe("Given the getPage method of PostController", () => {
   });
 
   describe("When it receives a request and a response", () => {
-    const posts = [recipe1, recipe2, recipe3, recipe4, recipe5];
+    const posts = [
+      fixturePosts.recipe1,
+      fixturePosts.recipe2,
+      fixturePosts.recipe3,
+      fixturePosts.recipe4,
+      fixturePosts.recipe5,
+    ];
 
     const query = {
       sort: jest.fn().mockReturnThis(),
@@ -51,9 +47,11 @@ describe("Given the getPage method of PostController", () => {
     } as Pick<Request, "query">;
 
     test("Then it should call the response's status method with status code 200", async () => {
+      const expectedStatusCode = statusCodes.OK;
+
       await postController.getPage(req as Request, res as Response);
 
-      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
     });
 
     test("Then it should call the response's json method with recipes 1 to 5", async () => {
@@ -65,7 +63,13 @@ describe("Given the getPage method of PostController", () => {
 
   describe("When it receives a request with pageNumber 2 and a response", () => {
     test("Then it should call the reponse's json method with recipes 6 to 10", async () => {
-      const posts = [recipe6, recipe7, recipe8, recipe9, recipe10];
+      const posts = [
+        fixturePosts.recipe6,
+        fixturePosts.recipe7,
+        fixturePosts.recipe8,
+        fixturePosts.recipe9,
+        fixturePosts.recipe10,
+      ];
 
       const query = {
         sort: jest.fn().mockReturnThis(),

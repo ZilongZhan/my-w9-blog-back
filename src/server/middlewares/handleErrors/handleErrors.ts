@@ -2,6 +2,7 @@ import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
 import createDebug from "debug";
 import ServerError from "../../ServerError/ServerError.js";
+import statusCodes from "../../../globals/statusCodes.js";
 
 const debug = createDebug("posts:server:error");
 
@@ -14,7 +15,7 @@ const handleErrors = (
 ): void => {
   debug(error.message);
 
-  res.status(error.statusCode ?? 500).json({
+  res.status(error.statusCode ?? statusCodes.INTERNAL_SERVER_ERROR).json({
     error:
       error instanceof ServerError && error.message
         ? error.message

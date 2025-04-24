@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import ServerError from "../../ServerError/ServerError.js";
 import handleErrors from "./handleErrors.js";
+import statusCodes from "../../../globals/statusCodes.js";
 
 describe("Given the handleErrors middleware", () => {
   const req = {};
@@ -15,7 +16,7 @@ describe("Given the handleErrors middleware", () => {
   });
 
   describe("When it recieves a reponse and an error with status code 404 and message 'Endpoint not found'", () => {
-    const error = new ServerError(404, "Endpoint not found");
+    const error = new ServerError(statusCodes.NOT_FOUND, "Endpoint not found");
 
     test("Then it should call the response's status method with status code 404", () => {
       handleErrors(error, req as Request, res as Response, next);
@@ -34,7 +35,7 @@ describe("Given the handleErrors middleware", () => {
     test("Then it should call the response's json method with error message 'Server error'", () => {
       const expectedErrorMessage = "Server error";
 
-      const error = new ServerError(404);
+      const error = new ServerError(statusCodes.NOT_FOUND);
 
       handleErrors(error, req as Request, res as Response, next);
 
@@ -46,9 +47,11 @@ describe("Given the handleErrors middleware", () => {
     const error = new Error("Cannot read properties of undefined");
 
     test("Then it should call the response's status method with status code 500", () => {
+      const expectedStatusCode = statusCodes.INTERNAL_SERVER_ERROR;
+
       handleErrors(error as ServerError, req as Request, res as Response, next);
 
-      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
     });
 
     test("Then it should call the response's json method with error message 'Server error", () => {
