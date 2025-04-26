@@ -14,7 +14,7 @@ class PostController implements PostControllerStructure {
       pageNumber = "1";
     }
 
-    const toStartingPosition = 1 * Number(pageNumber) - 1;
+    const toStartingPosition = (Number(pageNumber) - 1) * 5;
     const postsLimit = 5;
 
     const posts = await this.posts
