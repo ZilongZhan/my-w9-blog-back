@@ -38,7 +38,9 @@
     "typescript-eslint": "^8.30.1"
   },
   "dependencies": {
+    "@types/cors": "^2.8.17",
     "chalk": "^5.4.1",
+    "cors": "^2.8.5",
     "debug": "^4.4.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
