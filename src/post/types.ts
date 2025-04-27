@@ -7,3 +7,5 @@ export interface PostStructure {
   content: string;
   publishDate: Date;
 }
+
+export type PostData = Omit<PostStructure, "_id">;
