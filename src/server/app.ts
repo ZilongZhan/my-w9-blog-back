@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+import cors from "cors";
 import handleHealthCheck from "./middlewares/handleHealthCheck/handleHealthCheck.js";
 import handleErrors from "./middlewares/handleErrors/handleErrors.js";
 import handleEndpointNotFound from "./middlewares/handleEndpointNotFound/handleEndpointNotFound.js";
@@ -9,6 +10,7 @@ const app = express();
 
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cors());
 
 app.get("/", handleHealthCheck);
 
