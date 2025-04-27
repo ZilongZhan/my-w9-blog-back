@@ -10,7 +10,28 @@ const app = express();
 
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const localhostOrigin = "http://localhost";
+      const netlifyOrigin = "railong-w8-blog-front.netlify.app";
+
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (
+        origin.startsWith(localhostOrigin) ||
+        origin.endsWith(netlifyOrigin)
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"), false);
+    },
+    credentials: true,
+  }),
+);
 
 app.get("/", handleHealthCheck);
 
