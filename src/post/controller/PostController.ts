@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import { PostControllerStructure, PostsRequest } from "./types.js";
-import { Model } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import { PostStructure } from "../types.js";
 import statusCodes from "../../globals/statusCodes.js";
 import { mapPostDataDtoToPostData } from "../dto/mappers.js";
@@ -59,6 +59,37 @@ class PostController implements PostControllerStructure {
     (await newPost).save();
 
     res.status(statusCodes.CREATED).json(newPost);
+  };
+
+  public deletePost = async (
+    req: PostsRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { postId } = req.params;
+
+    const isValidId = mongoose.isValidObjectId(postId);
+
+    if (!isValidId) {
+      const error = new ServerError(statusCodes.BAD_REQUEST, "Invalid post ID");
+
+      next(error);
+      return;
+    }
+
+    const post = await this.postModel.findByIdAndDelete<PostStructure>(postId);
+
+    if (!post) {
+      const error = new ServerError(
+        statusCodes.NOT_FOUND,
+        `Post with ID ${postId} doesn't exist`,
+      );
+
+      next(error);
+      return;
+    }
+
+    res.status(statusCodes.OK).json(post);
   };
 }
 
