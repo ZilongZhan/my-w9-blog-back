@@ -21,10 +21,7 @@ describe("Given the addPost method of PostController", () => {
   describe("When it receives a request with a mac and cheese recipe, and a response", () => {
     const postModel = {
       findOne: jest.fn().mockReturnValue(null),
-      create: jest.fn().mockReturnValue({
-        ...macAndCheeseDto,
-        save: jest.fn(),
-      }),
+      create: jest.fn().mockReturnValue(macAndCheeseDto),
     } as Pick<Model<PostStructure>, "findOne">;
 
     const postController = new PostController(
@@ -53,10 +50,7 @@ describe("Given the addPost method of PostController", () => {
   describe("When it receives a request with a pulled pork recipe that already exists, and a next function", () => {
     const postModel = {
       findOne: jest.fn().mockReturnValue(pulledPorkDto),
-      create: jest.fn().mockReturnValue({
-        ...macAndCheeseDto,
-        save: jest.fn(),
-      }),
+      create: jest.fn().mockReturnValue(macAndCheeseDto),
     } as Pick<Model<PostStructure>, "findOne">;
 
     const postController = new PostController(
@@ -68,12 +62,12 @@ describe("Given the addPost method of PostController", () => {
     } as Pick<PostsRequest, "body">;
 
     test("Then it should call the next function with error 409 'Post with this title already exists'", async () => {
-      await postController.addPost(req as PostsRequest, res as Response, next);
-
       const expectedError = new ServerError(
         statusCodes.CONFLICT,
         "Post with this title already exists",
       );
+
+      await postController.addPost(req as PostsRequest, res as Response, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });
