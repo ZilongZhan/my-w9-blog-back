@@ -5,7 +5,7 @@ export interface PostStructure {
   imageAlt: string;
   tags: string[];
   content: string;
-  publishDate: Date;
+  publishDate?: Date;
 }
 
 export type PostData = Omit<PostStructure, "_id">;
