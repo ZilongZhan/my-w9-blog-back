@@ -4,7 +4,9 @@ import connectToDatabase from "./database/connectToDatabase.js";
 
 const port = process.env.PORT ?? 3001;
 
-await connectToDatabase(
-  "mongodb+srv://zilongzhan:cacasaurio3000plusmax@cluster-pro-max.zzkvldx.mongodb.net/blog",
-);
+const dbUsername = process.env.DB_USERNAME;
+const dbPassword = process.env.DB_PASSWORD;
+const databaseUri = `mongodb+srv://${dbUsername}:${dbPassword}@cluster-pro-max.zzkvldx.mongodb.net/blog`;
+
+await connectToDatabase(databaseUri);
 startServer(port);
