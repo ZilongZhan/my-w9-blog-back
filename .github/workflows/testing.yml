@@ -2,6 +2,9 @@ name: Testing
 
 on: push
 
+env:
+  ORIGINS: ${{ vars.ORIGINS}}
+
 jobs:
   test:
     name: Tests passes
