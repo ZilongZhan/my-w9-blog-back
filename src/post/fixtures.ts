@@ -6,6 +6,7 @@ const recipe1: PostStructure = {
   title: "Instant Pot Mac and Cheese",
   imageUrl: "https://example.com/images/mac-and-cheese.jpg",
   imageAlt: "Creamy mac and cheese",
+  author: "John Doe",
   tags: ["quick meals", "instant pot", "comfort food"],
   content: `Ingredients:
 - 2 cups elbow macaroni
@@ -28,6 +29,7 @@ const recipe2: PostStructure = {
   title: "Slow Cooker BBQ Pulled Pork",
   imageUrl: "https://example.com/images/pulled-pork.jpg",
   imageAlt: "Pulled pork sandwich with BBQ sauce",
+  author: "John Doe",
   tags: ["slow cook", "bbq", "pork"],
   content: `Ingredients:
 - 3 lb pork shoulder
@@ -49,6 +51,7 @@ const recipe3: PostStructure = {
   title: "Overnight Oats with Berries",
   imageUrl: "https://example.com/images/overnight-oats.jpg",
   imageAlt: "Jar of overnight oats topped with berries",
+  author: "John Doe",
   tags: ["breakfast", "healthy", "no cook"],
   content: `Ingredients:
 - 1/2 cup rolled oats
@@ -69,6 +72,7 @@ const recipe4: PostStructure = {
   title: "Rice Cooker Vegetable Curry",
   imageUrl: "https://example.com/images/vegetable-curry.jpg",
   imageAlt: "Colorful vegetable curry in a bowl",
+  author: "John Doe",
   tags: ["vegetarian", "rice cooker", "easy dinner"],
   content: `Ingredients:
 - 1 cup chopped potatoes
@@ -91,6 +95,7 @@ const recipe5: PostStructure = {
   title: "Pan-Fried Salmon with Dill Sauce",
   imageUrl: "https://example.com/images/salmon-dill.jpg",
   imageAlt: "Salmon filet with creamy dill sauce",
+  author: "John Doe",
   tags: ["seafood", "pan fry", "dinner"],
   content: `Ingredients:
 - 2 salmon fillets
@@ -113,6 +118,7 @@ const recipe6: PostStructure = {
   title: "No-Bake Chocolate Oat Bars",
   imageUrl: "https://example.com/images/chocolate-oat-bars.jpg",
   imageAlt: "Stack of no-bake chocolate oat bars",
+  author: "John Doe",
   tags: ["dessert", "no bake", "snacks"],
   content: `Ingredients:
 - 2 cups rolled oats
@@ -134,6 +140,7 @@ const recipe7: PostStructure = {
   title: "Spaghetti Aglio e Olio",
   imageUrl: "https://example.com/images/aglio-e-olio.jpg",
   imageAlt: "Spaghetti with garlic and olive oil",
+  author: "John Doe",
   tags: ["italian", "quick meals", "vegan"],
   content: `Ingredients:
 - 8 oz spaghetti
@@ -156,6 +163,7 @@ const recipe8: PostStructure = {
   title: "Chickpea Salad Wraps",
   imageUrl: "https://example.com/images/chickpea-wrap.jpg",
   imageAlt: "Lettuce wraps filled with chickpea salad",
+  author: "John Doe",
   tags: ["healthy", "vegan", "lunch"],
   content: `Ingredients:
 - 1 can chickpeas, mashed
@@ -178,6 +186,7 @@ const recipe9: PostStructure = {
   title: "Mason Jar Greek Salad",
   imageUrl: "https://example.com/images/greek-salad.jpg",
   imageAlt: "Layered Greek salad in a mason jar",
+  author: "John Doe",
   tags: ["meal prep", "salad", "vegetarian"],
   content: `Ingredients:
 - 1/2 cup cherry tomatoes
@@ -199,6 +208,7 @@ const recipe10: PostStructure = {
   title: "Air Fryer Sweet Potato Fries",
   imageUrl: "https://example.com/images/sweet-potato-fries.jpg",
   imageAlt: "Crispy sweet potato fries in a bowl",
+  author: "John Doe",
   tags: ["air fryer", "snack", "vegan"],
   content: `Ingredients:
 - 2 sweet potatoes, cut into fries

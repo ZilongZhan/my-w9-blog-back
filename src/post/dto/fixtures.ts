@@ -5,6 +5,7 @@ const macAndCheeseDto: PostDataDto = {
   title: "Instant Pot Mac and Cheese",
   imageUrl: "https://example.com/images/mac-and-cheese.jpg",
   imageAlt: "Creamy mac and cheese",
+  author: "John Doe",
   tags: ["quick meals", "instant pot", "comfort food"],
   content: `Ingredients:
 - 2 cups elbow macaroni
@@ -26,6 +27,7 @@ const pulledPorkDto: PostDataDto = {
   title: "Slow Cooker BBQ Pulled Pork",
   imageUrl: "https://example.com/images/pulled-pork.jpg",
   imageAlt: "Pulled pork sandwich with BBQ sauce",
+  author: "John Doe",
   tags: ["slow cook", "bbq", "pork"],
   content: `Ingredients:
 - 3 lb pork shoulder

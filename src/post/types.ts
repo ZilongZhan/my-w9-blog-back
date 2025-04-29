@@ -5,6 +5,7 @@ export interface PostStructure {
   imageAlt: string;
   tags: string[];
   content: string;
+  author: string;
   publishDate?: Date;
 }
 

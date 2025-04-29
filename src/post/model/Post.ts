@@ -27,6 +27,10 @@ const PostSchema = new Schema<PostStructure>(
       type: String,
       required: true,
     },
+    author: {
+      type: String,
+      required: true,
+    },
   },
   {
     versionKey: false,
