@@ -13,21 +13,17 @@ app.use(express.json());
 app.use(
   cors({
     origin: (origin, callback) => {
-      const localhostOrigin = "http://localhost";
-      const netlifyOrigin = "zilo-w9-blog-front.netlify.app";
+      const origins = process.env.ORIGINS.split(",");
 
-      if (!origin) {
+      const isAllowedOrigin = origins.some((thisOrigin) =>
+        origin?.includes(thisOrigin),
+      );
+
+      if (isAllowedOrigin || !origin) {
         return callback(null, true);
       }
 
-      if (
-        origin.startsWith(localhostOrigin) ||
-        origin.endsWith(netlifyOrigin)
-      ) {
-        return callback(null, true);
-      }
-
-      return callback(new Error("Not allowed by CORS"), false);
+      return callback(new Error("Origin not allowed by CORS"), false);
     },
     credentials: true,
   }),
