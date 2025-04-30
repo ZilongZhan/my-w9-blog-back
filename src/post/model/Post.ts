@@ -10,22 +10,19 @@ const PostSchema = new Schema<PostStructure>(
     title: {
       type: String,
       required: true,
-      min: 5,
-      max: 50,
+      minlength: [5, "Minimum 5 characters required"],
+      maxlength: [50, "Maximum 50 characters allowed"],
     },
     imageUrl: {
       type: String,
       required: true,
-      match: [
-        /^http AND \.(jpg|jpeg|png|gif|webp)$/i,
-        "Invalid media/url format",
-      ],
+      match: [/\.(jpg|jpeg|png|gif|webp)$/i, "Invalid media/url format"],
     },
     imageAlt: {
       type: String,
       required: true,
-      min: 5,
-      max: 100,
+      minlength: [5, "Minimum 5 characters required"],
+      maxlength: [100, "Maximum 100 characters allowed"],
     },
     tags: {
       type: [String],
@@ -34,14 +31,14 @@ const PostSchema = new Schema<PostStructure>(
     content: {
       type: String,
       required: true,
-      min: 100,
-      max: 1000,
+      minlength: [200, "Minimum 200 characters required"],
+      maxlength: [3000, "Maximum 3000 characters allowed"],
     },
     author: {
       type: String,
       required: true,
-      min: 2,
-      max: 70,
+      minlength: [2, "Minimum 2 characters required"],
+      maxlength: [70, "Maximum 70 characters allowed"],
     },
   },
   {

@@ -42,7 +42,7 @@ describe("Given the addPost method of PostController", () => {
       await postController.addPost(req as PostsRequest, res as Response, next);
 
       expect(res.json).toHaveBeenCalledWith(
-        expect.objectContaining(macAndCheeseDto),
+        expect.objectContaining({ post: macAndCheeseDto }),
       );
     });
   });
@@ -70,6 +70,32 @@ describe("Given the addPost method of PostController", () => {
       await postController.addPost(req as PostsRequest, res as Response, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+
+  describe("When it receives a request with Mac & Cheese recipe by author 'A'", () => {
+    test("Then it should call the next function with error 400 'foo'", () => {
+      const postModel = {
+        findOne: jest.fn().mockReturnValue(null),
+        create: jest.fn().mockReturnValue(macAndCheeseDto),
+      } as Pick<Model<PostStructure>, "findOne">;
+
+      const postController = new PostController(
+        postModel as Model<PostStructure>,
+      );
+
+      const req = {
+        body: { ...macAndCheeseDto, author: "A" },
+      } as Pick<PostsRequest, "body">;
+
+      postController.addPost(req as PostsRequest, res as Response, next);
+
+      const error = new ServerError(
+        statusCodes.BAD_REQUEST,
+        "Post validation failed: author: Minimum 2 characters required",
+      );
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

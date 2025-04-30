@@ -46,7 +46,7 @@ describe("Given the deletePost method of PostController", () => {
         next,
       );
 
-      expect(res.json).toHaveBeenCalledWith(recipe1);
+      expect(res.json).toHaveBeenCalledWith({ post: recipe1 });
     });
   });
 
