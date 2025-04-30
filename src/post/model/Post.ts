@@ -10,14 +10,22 @@ const PostSchema = new Schema<PostStructure>(
     title: {
       type: String,
       required: true,
+      min: 5,
+      max: 50,
     },
     imageUrl: {
       type: String,
       required: true,
+      match: [
+        /^http AND \.(jpg|jpeg|png|gif|webp)$/i,
+        "Invalid media/url format",
+      ],
     },
     imageAlt: {
       type: String,
       required: true,
+      min: 5,
+      max: 100,
     },
     tags: {
       type: [String],
@@ -26,10 +34,14 @@ const PostSchema = new Schema<PostStructure>(
     content: {
       type: String,
       required: true,
+      min: 100,
+      max: 1000,
     },
     author: {
       type: String,
       required: true,
+      min: 2,
+      max: 70,
     },
   },
   {
