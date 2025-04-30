@@ -5,6 +5,7 @@ import { PostStructure } from "../types.js";
 import statusCodes from "../../globals/statusCodes.js";
 import { mapPostDataDtoToPostData } from "../dto/mappers.js";
 import ServerError from "../../server/ServerError/ServerError.js";
+import Post from "../model/Post.js";
 
 class PostController implements PostControllerStructure {
   constructor(private postModel: Model<PostStructure>) {}
@@ -38,6 +39,18 @@ class PostController implements PostControllerStructure {
   ): Promise<void> => {
     const postDataDto = req.body;
 
+    const isNotValidPostData = new Post(postDataDto).validateSync();
+
+    if (isNotValidPostData) {
+      const error = new ServerError(
+        statusCodes.BAD_REQUEST,
+        isNotValidPostData.message,
+      );
+
+      next(error);
+      return;
+    }
+
     const existingPost = await this.postModel.findOne({
       title: postDataDto.title,
     });
@@ -53,10 +66,9 @@ class PostController implements PostControllerStructure {
     }
 
     const postData = mapPostDataDtoToPostData(postDataDto);
+    const post = await this.postModel.create(postData);
 
-    const newPost = await this.postModel.create(postData);
-
-    res.status(statusCodes.CREATED).json(newPost);
+    res.status(statusCodes.CREATED).json({ post });
   };
 
   public deletePost = async (
@@ -87,7 +99,7 @@ class PostController implements PostControllerStructure {
       return;
     }
 
-    res.status(statusCodes.OK).json(post);
+    res.status(statusCodes.OK).json({ post });
   };
 }
 
