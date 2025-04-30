@@ -4,7 +4,6 @@ import mongoose, { Model } from "mongoose";
 import { PostStructure } from "../types.js";
 import statusCodes from "../../globals/statusCodes.js";
 import { mapPostDataDtoToPostData } from "../dto/mappers.js";
-import { PostDataDto } from "../dto/types.js";
 import ServerError from "../../server/ServerError/ServerError.js";
 
 class PostController implements PostControllerStructure {
@@ -37,7 +36,7 @@ class PostController implements PostControllerStructure {
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
-    const postDataDto = req.body as PostDataDto;
+    const postDataDto = req.body;
 
     const existingPost = await this.postModel.findOne({
       title: postDataDto.title,
