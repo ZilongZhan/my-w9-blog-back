@@ -17,7 +17,7 @@ const setupTestDatabase = (): void => {
   });
 
   afterEach(async () => {
-    Post.deleteMany({});
+    await Post.deleteMany({});
 
     await Post.create(macAndCheeseDto, pulledPorkDto);
   });

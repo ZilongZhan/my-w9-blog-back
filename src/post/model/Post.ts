@@ -5,7 +5,7 @@ const PostSchema = new Schema<PostStructure>(
   {
     publishDate: {
       type: Date,
-      default: Date.now(),
+      default: Date.now,
     },
     title: {
       type: String,
