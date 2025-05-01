@@ -1,6 +1,6 @@
 import { PostDataDto } from "./types.js";
 
-const macAndCheeseDto: PostDataDto = {
+export const macAndCheeseDto: PostDataDto = {
   publishDate: "2025-04-13T09:00:00.000Z",
   title: "Instant Pot Mac and Cheese",
   imageUrl: "https://example.com/images/mac-and-cheese.jpg",
@@ -22,7 +22,7 @@ Instructions:
 4. Mix until creamy and smooth.`,
 };
 
-const pulledPorkDto: PostDataDto = {
+export const pulledPorkDto: PostDataDto = {
   publishDate: "2025-04-14T11:30:00.000Z",
   title: "Slow Cooker BBQ Pulled Pork",
   imageUrl: "https://example.com/images/pulled-pork.jpg",
@@ -43,4 +43,22 @@ Instructions:
 4. Shred pork, stir in BBQ sauce, and serve.`,
 };
 
-export { macAndCheeseDto, pulledPorkDto };
+export const oatsWithBerriesDto: PostDataDto = {
+  publishDate: "2025-04-14T11:30:00.000Z",
+  title: "Overnight Oats with Berries",
+  imageUrl: "https://example.com/images/overnight-oats.jpg",
+  imageAlt: "Jar of overnight oats topped with berries",
+  author: "John Doe",
+  tags: ["breakfast", "healthy", "no cook"],
+  content: `Ingredients:
+- 1/2 cup rolled oats
+- 1/2 cup milk or almond milk
+- 1/4 cup yogurt
+- 1 tbsp chia seeds
+- 1/2 cup mixed berries
+
+Instructions:
+1. Combine oats, milk, yogurt, and chia seeds in a jar.
+2. Stir well and refrigerate overnight.
+3. Top with fresh berries in the morning and enjoy.`,
+};

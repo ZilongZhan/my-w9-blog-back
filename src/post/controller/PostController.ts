@@ -66,7 +66,7 @@ class PostController implements PostControllerStructure {
     }
 
     const postData = mapPostDataDtoToPostData(postDataDto);
-    const post = await this.postModel.create(postData);
+    const post: PostStructure = await this.postModel.create(postData);
 
     res.status(statusCodes.CREATED).json({ post });
   };
