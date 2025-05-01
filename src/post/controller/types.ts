@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { PostDataDto } from "../dto/types.js";
+import { PostsInfo } from "../types.js";
 
 export interface PostControllerStructure {
   getPosts: (req: PostsRequest, res: Response) => void;
@@ -18,3 +19,17 @@ export interface PostsBody {
 }
 
 export type PostsRequest = Request<PostsBody, object, PostModel, PostsQuery>;
+
+export type GetPostsInfoResponse = PostsInfo;
+
+export interface AddPostResponse {
+  post: PostDataDto;
+}
+
+export interface HealthCheckResponse {
+  message: string;
+}
+
+export type ErrorRespone = {
+  error: string;
+};
