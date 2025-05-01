@@ -10,3 +10,8 @@ export interface PostStructure {
 }
 
 export type PostData = Omit<PostStructure, "_id">;
+
+export interface PostsInfo {
+  posts: PostStructure[];
+  postsTotal: number;
+}
