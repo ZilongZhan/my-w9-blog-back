@@ -7,6 +7,7 @@ const postsRouter = Router();
 const postController = new PostController(Post);
 
 postsRouter.get("/", postController.getPosts);
+postsRouter.get("/:postId", postController.getPostById);
 
 postsRouter.post("/", postController.addPost);
 
