@@ -2,7 +2,10 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import Post from "../post/model/Post.js";
 import connectToDatabase from "../database/connectToDatabase.js";
-import { macAndCheeseDto, pulledPorkDto } from "../post/dto/fixtures.js";
+import {
+  macAndCheeseDocumentDto,
+  pulledPorkDocumentDto,
+} from "../post/dto/fixtures.js";
 
 const setupTestDatabase = (): void => {
   let database: MongoMemoryServer;
@@ -13,13 +16,13 @@ const setupTestDatabase = (): void => {
     const connectionString = database.getUri();
     await connectToDatabase(connectionString);
 
-    await Post.create(macAndCheeseDto, pulledPorkDto);
+    await Post.create(macAndCheeseDocumentDto, pulledPorkDocumentDto);
   });
 
   afterEach(async () => {
     await Post.deleteMany({});
 
-    await Post.create(macAndCheeseDto, pulledPorkDto);
+    await Post.create(macAndCheeseDocumentDto, pulledPorkDocumentDto);
   });
 
   afterAll(async () => {

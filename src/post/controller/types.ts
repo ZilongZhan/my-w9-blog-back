@@ -22,7 +22,7 @@ export type PostsRequest = Request<PostsBody, object, PostModel, PostsQuery>;
 
 export type GetPostsInfoResponse = PostsInfo;
 
-export interface AddPostResponse {
+export interface PostResponse {
   post: PostDataDto;
 }
 
