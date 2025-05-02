@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import { PostControllerStructure, PostsRequest } from "./types.js";
-import mongoose, { Model } from "mongoose";
+import { isValidObjectId, Model } from "mongoose";
 import { PostStructure } from "../types.js";
 import statusCodes from "../../globals/statusCodes.js";
 import { mapPostDataDtoToPostData } from "../dto/mappers.js";
@@ -71,14 +71,14 @@ class PostController implements PostControllerStructure {
     res.status(statusCodes.CREATED).json({ post });
   };
 
-  public deletePost = async (
+  public deletePostById = async (
     req: PostsRequest,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
     const { postId } = req.params;
 
-    const isValidId = mongoose.isValidObjectId(postId);
+    const isValidId = isValidObjectId(postId);
 
     if (!isValidId) {
       const error = new ServerError(statusCodes.BAD_REQUEST, "Invalid post ID");
@@ -88,6 +88,37 @@ class PostController implements PostControllerStructure {
     }
 
     const post = await this.postModel.findByIdAndDelete<PostStructure>(postId);
+
+    if (!post) {
+      const error = new ServerError(
+        statusCodes.NOT_FOUND,
+        `Post with ID ${postId} doesn't exist`,
+      );
+
+      next(error);
+      return;
+    }
+
+    res.status(statusCodes.OK).json({ post });
+  };
+
+  public getPostById = async (
+    req: PostsRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { postId } = req.params;
+
+    const isValidId = isValidObjectId(postId);
+
+    if (!isValidId) {
+      const error = new ServerError(statusCodes.BAD_REQUEST, "Invalid post ID");
+
+      next(error);
+      return;
+    }
+
+    const post = await this.postModel.findById(postId);
 
     if (!post) {
       const error = new ServerError(

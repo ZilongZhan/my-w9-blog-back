@@ -5,7 +5,12 @@ import { PostsInfo } from "../types.js";
 export interface PostControllerStructure {
   getPosts: (req: PostsRequest, res: Response) => void;
   addPost: (req: PostsRequest, res: Response, next: NextFunction) => void;
-  deletePost: (req: PostsRequest, res: Response, next: NextFunction) => void;
+  deletePostById: (
+    req: PostsRequest,
+    res: Response,
+    next: NextFunction,
+  ) => void;
+  getPostById: (req: PostsRequest, res: Response, next: NextFunction) => void;
 }
 
 export interface PostsQuery {
