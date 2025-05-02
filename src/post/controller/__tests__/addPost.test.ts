@@ -49,6 +49,11 @@ describe("Given the addPost method of PostController", () => {
 
   describe("When it receives a request with a pulled pork recipe that already exists, and a next function", () => {
     test("Then it should call the next function with error 409 'Post with this title already exists'", async () => {
+      const expectedError = new ServerError(
+        statusCodes.CONFLICT,
+        "Post with this title already exists",
+      );
+
       const postModel = {
         findOne: jest.fn().mockReturnValue(pulledPorkDto),
       } as Pick<Model<PostStructure>, "findOne">;
@@ -61,11 +66,6 @@ describe("Given the addPost method of PostController", () => {
         body: macAndCheeseDto,
       } as Pick<PostsRequest, "body">;
 
-      const expectedError = new ServerError(
-        statusCodes.CONFLICT,
-        "Post with this title already exists",
-      );
-
       await postController.addPost(req as PostsRequest, res as Response, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
@@ -74,7 +74,7 @@ describe("Given the addPost method of PostController", () => {
 
   describe("When it receives a request with Mac & Cheese recipe by author 'A'", () => {
     test("Then it should call the next function with error 400 'foo'", async () => {
-      const error = new ServerError(
+      const expectedError = new ServerError(
         statusCodes.BAD_REQUEST,
         "Post validation failed: author: Minimum 2 characters required",
       );
@@ -95,7 +95,7 @@ describe("Given the addPost method of PostController", () => {
 
       await postController.addPost(req as PostsRequest, res as Response, next);
 
-      expect(next).toHaveBeenCalledWith(error);
+      expect(next).toHaveBeenCalledWith(expectedError);
     });
 
     describe("When it receives a request with Mac & Cheese recipe without publish date, and a response", () => {

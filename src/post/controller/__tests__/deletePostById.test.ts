@@ -9,7 +9,7 @@ import ServerError from "../../../server/ServerError/ServerError.js";
 
 describe("Given the deletePost method of PostController", () => {
   const postModel = {
-    findByIdAndDelete: jest.fn().mockReturnValue(recipe1),
+    findByIdAndDelete: jest.fn().mockResolvedValue(recipe1),
   } as Pick<Model<PostStructure>, "findByIdAndDelete">;
 
   const postController = new PostController(postModel as Model<PostStructure>);
@@ -30,7 +30,7 @@ describe("Given the deletePost method of PostController", () => {
     } as Pick<PostsRequest, "params">;
 
     test("Then it should call the response's status method with status code 200", async () => {
-      await postController.deletePost(
+      await postController.deletePostById(
         req as PostsRequest,
         res as Response,
         next,
@@ -40,7 +40,7 @@ describe("Given the deletePost method of PostController", () => {
     });
 
     test("Then it should call the response's json method with recipe 1", async () => {
-      await postController.deletePost(
+      await postController.deletePostById(
         req as PostsRequest,
         res as Response,
         next,
@@ -50,50 +50,53 @@ describe("Given the deletePost method of PostController", () => {
     });
   });
 
-  describe("When it receives a request with '12345' as ID and a next function", () => {
-    const req = {
-      params: { postId: "12345" },
-    } as Pick<PostsRequest, "params">;
-
+  describe("When it receives a request with '12345' as invalid ID and a next function", () => {
     test("Then it should call the next function with error 400 'Invalid post ID", async () => {
-      const error = new ServerError(statusCodes.BAD_REQUEST, "Invalid post ID");
+      const expectedError = new ServerError(
+        statusCodes.BAD_REQUEST,
+        "Invalid post ID",
+      );
 
-      await postController.deletePost(
+      const req = {
+        params: { postId: "12345" },
+      } as Pick<PostsRequest, "params">;
+
+      await postController.deletePostById(
         req as PostsRequest,
         res as Response,
         next,
       );
 
-      expect(next).toHaveBeenCalledWith(error);
+      expect(next).toHaveBeenCalledWith(expectedError);
     });
   });
 
   describe("When it receives a request with recipe 2's ID which doesn't exist and a next function", () => {
-    const postModel = {
-      findByIdAndDelete: jest.fn().mockReturnValue(null),
-    } as Pick<Model<PostStructure>, "findByIdAndDelete">;
-
-    const postController = new PostController(
-      postModel as Model<PostStructure>,
-    );
-
-    const req = {
-      params: { postId: recipe2._id },
-    } as Pick<PostsRequest, "params">;
-
     test("Then it should call the next funciton with error 404 'Post with ID 68068eedaad91c08b13ed668 doesn't exist'", async () => {
-      await postController.deletePost(
+      const expectedError = new ServerError(
+        statusCodes.NOT_FOUND,
+        "Post with ID 68068eedaad91c08b13ed668 doesn't exist",
+      );
+
+      const postModel = {
+        findByIdAndDelete: jest.fn().mockResolvedValue(null),
+      } as Pick<Model<PostStructure>, "findByIdAndDelete">;
+
+      const postController = new PostController(
+        postModel as Model<PostStructure>,
+      );
+
+      const req = {
+        params: { postId: recipe2._id },
+      } as Pick<PostsRequest, "params">;
+
+      await postController.deletePostById(
         req as PostsRequest,
         res as Response,
         next,
       );
 
-      const error = new ServerError(
-        statusCodes.NOT_FOUND,
-        "Post with ID 68068eedaad91c08b13ed668 doesn't exist",
-      );
-
-      expect(next).toHaveBeenCalledWith(error);
+      expect(next).toHaveBeenCalledWith(expectedError);
     });
   });
 });
