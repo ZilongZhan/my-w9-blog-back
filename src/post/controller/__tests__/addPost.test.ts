@@ -48,20 +48,19 @@ describe("Given the addPost method of PostController", () => {
   });
 
   describe("When it receives a request with a pulled pork recipe that already exists, and a next function", () => {
-    const postModel = {
-      findOne: jest.fn().mockReturnValue(pulledPorkDto),
-      create: jest.fn().mockReturnValue(macAndCheeseDto),
-    } as Pick<Model<PostStructure>, "findOne">;
-
-    const postController = new PostController(
-      postModel as Model<PostStructure>,
-    );
-
-    const req = {
-      body: macAndCheeseDto,
-    } as Pick<PostsRequest, "body">;
-
     test("Then it should call the next function with error 409 'Post with this title already exists'", async () => {
+      const postModel = {
+        findOne: jest.fn().mockReturnValue(pulledPorkDto),
+      } as Pick<Model<PostStructure>, "findOne">;
+
+      const postController = new PostController(
+        postModel as Model<PostStructure>,
+      );
+
+      const req = {
+        body: macAndCheeseDto,
+      } as Pick<PostsRequest, "body">;
+
       const expectedError = new ServerError(
         statusCodes.CONFLICT,
         "Post with this title already exists",
@@ -74,10 +73,16 @@ describe("Given the addPost method of PostController", () => {
   });
 
   describe("When it receives a request with Mac & Cheese recipe by author 'A'", () => {
-    test("Then it should call the next function with error 400 'foo'", () => {
+    test("Then it should call the next function with error 400 'foo'", async () => {
+      const error = new ServerError(
+        statusCodes.BAD_REQUEST,
+        "Post validation failed: author: Minimum 2 characters required",
+      );
+
+      const post = { ...macAndCheeseDto, author: "A" };
+
       const postModel = {
         findOne: jest.fn().mockReturnValue(null),
-        create: jest.fn().mockReturnValue(macAndCheeseDto),
       } as Pick<Model<PostStructure>, "findOne">;
 
       const postController = new PostController(
@@ -85,17 +90,47 @@ describe("Given the addPost method of PostController", () => {
       );
 
       const req = {
-        body: { ...macAndCheeseDto, author: "A" },
+        body: post,
       } as Pick<PostsRequest, "body">;
 
-      postController.addPost(req as PostsRequest, res as Response, next);
-
-      const error = new ServerError(
-        statusCodes.BAD_REQUEST,
-        "Post validation failed: author: Minimum 2 characters required",
-      );
+      await postController.addPost(req as PostsRequest, res as Response, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+
+    describe("When it receives a request with Mac & Cheese recipe without publish date, and a response", () => {
+      test("Then it should call the response's json method with a Mac & Cheese recipe that was published today", async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { publishDate, ...macAndCheeseWithoutPublishDate } = {
+          ...macAndCheeseDto,
+        };
+
+        const expectedPost = {
+          ...macAndCheeseWithoutPublishDate,
+          publishDate: Date.now(),
+        };
+
+        const postModel = {
+          findOne: jest.fn().mockReturnValue(null),
+          create: jest.fn().mockReturnValue(expectedPost),
+        } as Pick<Model<PostStructure>, "findOne" | "create">;
+
+        const postController = new PostController(
+          postModel as Model<PostStructure>,
+        );
+
+        const req = {
+          body: macAndCheeseWithoutPublishDate,
+        } as Pick<PostsRequest, "body">;
+
+        await postController.addPost(
+          req as PostsRequest,
+          res as Response,
+          next,
+        );
+
+        expect(res.json).toHaveBeenCalledWith({ post: expectedPost });
+      });
     });
   });
 });

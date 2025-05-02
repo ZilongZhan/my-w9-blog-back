@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../../../server/app.js";
-import { AddPostResponse, ErrorRespone } from "../../controller/types.js";
+import { PostResponse, ErrorRespone } from "../../controller/types.js";
 import { macAndCheeseDto, oatsWithBerriesDto } from "../../dto/fixtures.js";
 import setupTestDatabase from "../../../test-utils/setupTestDatabase.js";
 import statusCodes from "../../../globals/statusCodes.js";
@@ -14,7 +14,7 @@ describe("Given the POST /posts endpoint", () => {
         .post("/posts")
         .send(oatsWithBerriesDto);
 
-      const { post } = response.body as AddPostResponse;
+      const { post } = response.body as PostResponse;
 
       expect(post).toEqual(expect.objectContaining(oatsWithBerriesDto));
     });
@@ -56,7 +56,7 @@ describe("Given the POST /posts endpoint", () => {
         .post("/posts")
         .send(oatsWithBerriesWithoutPublishDate);
 
-      const { post } = response.body as AddPostResponse;
+      const { post } = response.body as PostResponse;
 
       const postPublishDate = new Date(post.publishDate).toDateString();
       const currentDate = new Date().toDateString();
