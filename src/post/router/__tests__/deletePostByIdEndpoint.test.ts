@@ -11,7 +11,7 @@ import statusCodes from "../../../globals/statusCodes.js";
 
 setupTestDatabase();
 
-describe(`Given the DELETE /posts/${macAndCheeseDocumentDto._id} endpoint`, () => {
+describe("Given the DELETE /posts/:postId endpoint", () => {
   describe("When it receives a request with Mac & Cheese recipe's ID", () => {
     test("Then it should respond with Mac & Cheese recipe and it should no longer exist", async () => {
       const postId = macAndCheeseDocumentDto._id;
@@ -27,11 +27,11 @@ describe(`Given the DELETE /posts/${macAndCheeseDocumentDto._id} endpoint`, () =
       expect(matchingPost).toBeNull();
     });
   });
-});
 
-describe(`Given the DELETE /posts/${oatsWithBerriesDocumentDto._id} endpoint`, () => {
   describe("When it receives a request with Oats with Berries recipe's ID which doesn't exist", () => {
     test(`Then it should respond with error 404 'Post with ID ${oatsWithBerriesDocumentDto._id} doesn't exist'`, async () => {
+      const expectedErrorMessage = `Post with ID ${oatsWithBerriesDocumentDto._id} doesn't exist`;
+
       const response = await request(app).delete(
         `/posts/${oatsWithBerriesDocumentDto._id}`,
       );
@@ -39,22 +39,20 @@ describe(`Given the DELETE /posts/${oatsWithBerriesDocumentDto._id} endpoint`, (
       const { error } = response.body as ErrorRespone;
 
       expect(response.status).toBe(statusCodes.NOT_FOUND);
-      expect(error).toBe(
-        `Post with ID ${oatsWithBerriesDocumentDto._id} doesn't exist`,
-      );
+      expect(error).toBe(expectedErrorMessage);
     });
   });
-});
 
-describe("Given the DELETE /posts/1234 endpoint", () => {
   describe("When it receives a request with '1234' invalid object ID", () => {
     test("Then it should respond with error 400 'Invalid post ID'", async () => {
+      const expectedErrorMessage = "Invalid post ID";
+
       const response = await request(app).delete("/posts/1234");
 
       const { error } = response.body as ErrorRespone;
 
       expect(response.status).toBe(statusCodes.BAD_REQUEST);
-      expect(error).toBe("Invalid post ID");
+      expect(error).toBe(expectedErrorMessage);
     });
   });
 });
