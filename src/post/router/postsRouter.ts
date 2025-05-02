@@ -10,6 +10,6 @@ postsRouter.get("/", postController.getPosts);
 
 postsRouter.post("/", postController.addPost);
 
-postsRouter.delete("/:postId", postController.deletePost);
+postsRouter.delete("/:postId", postController.deletePostById);
 
 export default postsRouter;
